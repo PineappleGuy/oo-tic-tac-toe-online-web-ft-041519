@@ -76,7 +76,7 @@ WIN_COMBINATIONS =[
         move(index, current_player) 
         display_board
         else   
-            "invalid"
+            puts "invalid"
             new_input = gets
             new_index = input_to_index(new_input)
             boolean = valid_move?(new_index)
