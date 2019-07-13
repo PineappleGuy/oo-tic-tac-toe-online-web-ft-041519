@@ -70,16 +70,16 @@ WIN_COMBINATIONS =[
     end
 
     def turn
+        display_board
         puts "Please enter a number, 1-9"
         input = gets.strip
         index = input_to_index(input)
         #binding.pry
         if valid_move?(index)
-        move(index, current_player) 
-        display_board
+            move(index, current_player) 
         else   
-        puts "invalid"
-        turn
+            puts "invalid"
+            turn
         end
     end
 
@@ -136,13 +136,16 @@ WIN_COMBINATIONS =[
     
     def play
         puts "Welcome to Tic Tac Toe!"
-        while over? == false
-            display_board
-            puts "Please enter 1-9"
-            input = gets
-            string = current_player
-            move(input_to_index(input), string)
-            display_board
+        while over? == false && draw? == false
+            turn
+        end
+        display_board
+        if winner == "O"
+            puts "Congratulations O!"
+        elsif winner == "X"
+            puts "Congratulations X!"
+        else 
+            puts "Cat's Game!"
         end
     end
 
