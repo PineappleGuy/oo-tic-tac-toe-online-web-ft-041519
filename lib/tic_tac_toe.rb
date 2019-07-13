@@ -1,3 +1,4 @@
+require 'pry'
 class TicTacToe
 
 WIN_COMBINATIONS =[
@@ -33,7 +34,7 @@ WIN_COMBINATIONS =[
     end
 
     def position_taken?(index)
-        if @board[index] == " "
+        if @board[index] == " " && index.between?(0, 8)
             false
         else 
             true
@@ -41,7 +42,7 @@ WIN_COMBINATIONS =[
     end
 
     def valid_move?(index)
-        if @board[index] == " "
+        if @board[index] == " " && index.between?(0, 8)
             true
         else 
             false
@@ -69,44 +70,80 @@ WIN_COMBINATIONS =[
     end
 
     def turn
-        input = gets
+        puts "Please enter a number, 1-9"
+        input = gets.strip
         index = input_to_index(input)
-        boolean = valid_move?(index)
-        if boolean == true
+        #binding.pry
+        if valid_move?(index)
         move(index, current_player) 
         display_board
         else   
-            puts "invalid"
-            new_input = gets
-            new_index = input_to_index(new_input)
-            boolean = valid_move?(new_index)
-            move(new_index, current_player) 
-            display_board
+        puts "invalid"
+        turn
         end
     end
 
     def won?
-
+        array = []
+        WIN_COMBINATIONS.each do |combo|
+            combo.each do |index|
+                array << @board[index] 
+            end
+            if array == ["X", "X", "X"] || array == ["O", "O", "O"]
+                return combo
+            else
+                array.clear
+            end
+        end
+        return false
     end
 
     def full?
-
+        if turn_count == 9
+            true
+        elsif turn_count < 9
+            false
+        end
     end
 
     def draw?
-
+       if won? == false && full? == true
+        true
+       else
+        false
+       end
     end
 
     def over?
-
+        if draw? == true
+            true
+        elsif won? != false
+            true
+        else
+            false
+        end
     end
 
     def winner
+        if won? != false && turn_count.even? == true
+            "O"
+        elsif won? != false && turn_count.even? == false
+            "X"
+        else
 
+        end
     end
     
     def play
-
+        puts "Welcome to Tic Tac Toe!"
+        while over? == false
+            display_board
+            puts "Please enter 1-9"
+            input = gets
+            string = current_player
+            move(input_to_index(input), string)
+            display_board
+        end
     end
 
 end
